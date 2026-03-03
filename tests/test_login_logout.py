@@ -1,16 +1,13 @@
 class TestLoginLogout:
     """Scenario 3: Full login/logout flow."""
 
-    USERNAME = "tomsmith"
-    PASSWORD = "SuperSecretPassword!"
-
-    def test_full_login_logout_flow(self, login_page, secure_page):
+    def test_full_login_logout_flow(self, login_page, secure_page, credentials):
         # Open Login page and login
         login_page.open()
-        login_page.login(self.USERNAME, self.PASSWORD)
+        login_page.login(credentials["username"], credentials["password"])
 
         # Assert user is on /secure page
-        assert "/secure" in secure_page.get_current_url()
+        assert secure_page.get_current_url().endswith("/secure")
 
         # Assert page has title and content
         assert secure_page.get_page_title_text() == "Secure Area"
@@ -24,5 +21,5 @@ class TestLoginLogout:
 
         # Assert user is logged out
         assert "/login" in login_page.get_current_url()
-        flash_text = login_page.get_flash_message_text()
+        flash_text = login_page.get_flash_message_text().strip()
         assert "logged out" in flash_text.lower()

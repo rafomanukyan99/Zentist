@@ -1,3 +1,4 @@
+import os
 import pytest
 from pages.main_page import MainPage
 from pages.login_page import LoginPage
@@ -17,3 +18,11 @@ def login_page(page, base_url) -> LoginPage:
 @pytest.fixture()
 def secure_page(page, base_url) -> SecurePage:
     return SecurePage(page, base_url)
+
+
+@pytest.fixture()
+def credentials():
+    return {
+        "username": os.getenv("TEST_USERNAME", "tomsmith"),
+        "password": os.getenv("TEST_PASSWORD", "SuperSecretPassword!"),
+    }

@@ -32,8 +32,9 @@ class TestLoginPageInvalidCredentials:
         main_page.click_form_authentication()
         login_page.login(username, password)
 
+        assert "/login" in login_page.get_current_url(), f"User left login page for: {description}"
         assert login_page.is_flash_error(), f"Expected error for: {description}"
-        flash_text = login_page.get_flash_message_text()
-        assert "invalid" in flash_text.lower() or "your username is invalid" in flash_text.lower() or "your password is invalid" in flash_text.lower(), (
+        flash_text = login_page.get_flash_message_text().strip()
+        assert "invalid" in flash_text.lower(), (
             f"Unexpected flash message for '{description}': {flash_text}"
         )
